@@ -43,6 +43,9 @@
 ;;(when (< emacs-major-version 23)
 ;;  (defvar user-emacs-directory "~/.emacs.d/"))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; pathの追加
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; load-pathを追加する関数を定義
 (defun add-to-load-path (&rest paths)
   (let (path)
@@ -53,27 +56,61 @@
 	(if (fboundp 'normal-top-level-add-subdirs-to-load-path)
 	    (normal-top-level-add-subdirs-to-load-path))))))
 
-(add-to-load-path "elisp" "conf" "public_repos" ".cask")
+(add-to-load-path "elisp"  ".cask")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; melpa
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa". "https://melpa.org/packages/"))
+
+(package-initialize)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; caskの読み込み
-(require 'cask)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'cask "/usr/local/opt/cask/cask.el")
 (cask-initialize)
-(define-key global-map "\C-h" 'delete-backward-char)
-(define-key global-map "\C-z" 'undo)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; multi-term
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when (require 'multi-term nil t)
+  (setq multi-term-program "/bin/bash"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Elpy を有効化
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (elpy-enable)
 ;;; 使用する Anaconda の仮想環境を設定
-(defvar venv-default "~/.pyenv/versions/anaconda3-4.0.0/envs/")
+(defvar venv-default "~/.pyenv/versions/anaconda3-4.3.1/envs/")
 ;;; virtualenv を使っているなら次のようなパス
 (defvar venv-default "~/.virtualenvs/hoge")
 ;;; デフォルト環境を有効化
-(pyvenv-activate venv-default)
+;;(pyvenv-activate venv-default)
 ;;; REPL 環境に IPython を使う
-(elpy-use-ipython)
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt")
 ;;; 自動補完のバックエンドとして Rope か Jedi を選択
 (setq elpy-rpc-backend "jedi")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; C and C++
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'cc-mode)
+
+;; c-mode-common-hook は C/C++ の設定
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (setq c-default-style "k&r") ;; カーニハン・リッチースタイル
+            (setq indent-tabs-mode nil)  ;; タブは利用しない
+            (setq c-basic-offset 4)      ;; indent は 4 スペース
+            ))
+
+;;; C++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 漢字変換 (Anthy) の設定
@@ -195,6 +232,7 @@
 (define-key global-map "\C-z" 'undo)
 (define-key global-map "\C-xrp" 'replace-regexp)
 (define-key global-map "\C-xw" 'copy-region-as-kill)
+(global-set-key [f8] 'neotree-toggle)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; visible bell
 (setq visible-bell t)
@@ -395,9 +433,9 @@
 ;;(load-library "flymake-cursor")
 
 ;; pep8の利用
-(require 'py-autopep8)
-(setq py-autopep8-options '("--max-line-length=200"))
-(setq flycheck-flake8-maximum-line-length 200)
+;; (require 'py-autopep8)
+;; (setq py-autopep8-options '("--max-line-length=200"))
+;; (setq flycheck-flake8-maximum-line-length 200)
 ;;(py-autopep8-enable-on-save)
 ;;(define-key python-mode-map (kbd "C-c F") 'py-autopep8)
 ;;(define-key python-mode-map (kbd "C-c f") 'py-autopep8-region)
@@ -406,7 +444,7 @@
 (add-hook 'before-save-hook 'py-autopep8-before-save)
 
 ;;flymake
-(flymake-mode t)
+;; (flymake-mode t)
 ;;errorやwarningを表示する
 ;;(require 'flymake-python-pyflakes)
 ;;(flymake-python-pyflakes-load)
@@ -424,4 +462,40 @@
  ;; If there is more than one, they won't work right.
 ;; )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; flycheck
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when (require 'flycheck nil t)
+  (remove-hook 'elpy-modules 'elpy-module-flymake)
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(define-key elpy-mode-map (kbd "C-c C-v") 'helm-flycheck)
+(require 'smartrep)   
+(smartrep-define-key elpy-mode-map "C-c"
+  '(("C-n" . flycheck-next-error)
+    ("C-p" . flycheck-previous-error)))
+
+;; google-cpplint
+;;(eval-after-load 'flycheck
+;;  '(progn
+;;     (require 'flycheck-google-cpplint)
+     ;; Add Google C++ Style checker.
+     ;; In default, syntax checked by Clang and Cppcheck.
+     ;;(flycheck-add-next-checker 'c/c++-cppcheck
+     ;;                           '(warning . c/c++-googlelint))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; flymake
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'flymake-google-cpplint)
+(add-hook 'c-mode-hook 'flymake-google-cpplint-load)
+(add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
+
+(custom-set-variables
+ '(flymake-google-cpplint-verbose "3")
+ '(flymake-google-cpplint-linelength "120")
+ )
+
+(custom-set-variables
+ '(flymake-google-cpplint-command "/Users/hiroki-iida/.pyenv/shims/cpplint"))
 
