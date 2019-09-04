@@ -25,3 +25,6 @@ ENV PATH=$HOME/.cask/bin:$PATH
 RUN cask upgrade
 RUN cp -r ${HOME}/setting_backup/.emacs.d ./
 RUN cd ~/.emacs.d && cask install
+
+## bashrc
+RUN cp ${HOME}/setting_backup/.bashrc_ubuntu

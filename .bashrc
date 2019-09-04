@@ -27,3 +27,20 @@ if [ -d "${RBENV_ROOT}" ]; then
   export PATH="${RBENV_ROOT}/bin:${PATH}"
   eval "$(rbenv init -)"
 fi
+
+# mkl and pficommon
+export CPATH="$HOME/.local/include"
+export MKL_ROOT_DIR="/opt/intel/mkl"
+export LD_LIBRARY_PATH="/usr/bin:/usr/lib:$MKL_ROOT_DIR/lib/intel64:/opt/intel/lib/intel64_lin:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="/usr/bin:/usr/lib:$HOME/.local/lib:$MKL_ROOT_DIR/lib/intel64:$LIBRARY_PATH"
+export PKG_CONFIG_PATH=":$HOME/.local/lib/pkgconfig"
+source /opt/intel/mkl/bin/mklvars.sh intel64 lp64
+
+# cask'
+export PATH="$HOME/.cask/bin:$PATH"
+
+# linuxbrew
+PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$(brew --prefix)/share/man:$MANPATH"
+export INFOPATH="$(brew --prefix)/share/info:$INFOPATH"
