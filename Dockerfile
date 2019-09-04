@@ -9,11 +9,12 @@ RUN apt-get update -y
 RUN apt-get install -y --allow-downgrades --allow-change-held-packages --no-install-recommends \
     emacs25
 
+RUN mkdir /data
 ENV HOME /home
 WORKDIR $HOME/
 
 ## python library
-RUN pip install pandas sklearn tqdm gensim scipy
+RUN pip install pandas sklearn tqdm gensim scipy jupyter ipython
 
 ## tmuxの設定
 RUN git clone git://github.com/meshidenn/setting_backup.git ${HOME}/setting_backup 
@@ -27,4 +28,6 @@ RUN cp -r ${HOME}/setting_backup/.emacs.d ./
 RUN cd ~/.emacs.d && cask install
 
 ## bashrc
-RUN cp ${HOME}/setting_backup/.bashrc_ubuntu
+RUN cp ${HOME}/setting_backup/.bashrc_ubuntu .bashrc
+RUN source .bashrc
+WORKDIR ${HOME}/work

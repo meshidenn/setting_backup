@@ -1,0 +1,13 @@
+version: '2.3'
+services:
+    horovod:
+        container_name: horovod
+        image: horovod:latest
+        volumes:
+            - /data:/data
+            - /home/hiroki-iida/work:/home/work
+        runtime: nvidia
+        tty: true
+        command: /bin/bash
+        ports:
+            - 8889:8889
