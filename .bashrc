@@ -21,6 +21,7 @@ alias ls='ls -G'
 alias grep='grep --color'
 alias df='df -h'
 alias ps='ps --sort=start_time'
+alias g="git"
 
 export RBENV_ROOT="${HOME}/.rbenv"
 if [ -d "${RBENV_ROOT}" ]; then
