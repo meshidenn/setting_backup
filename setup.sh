@@ -11,8 +11,8 @@ sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 mkdir .commands
-git clone https://github.com/rupa/z.git ~/.commands/
-echo "./ ~/.commands/z/z.sh" >> ~/.bashrc
+git clone https://github.com/rupa/z.git ~/.commands/z/
+echo ". ~/.commands/z/z.sh" >> ~/.bashrc
 
 
 source ~/.bashrc
