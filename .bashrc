@@ -113,3 +113,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+source /usr/local/etc/bash_completion.d/git-prompt.sh
+source /usr/local/etc/bash_completion.d/git-completion.bash
