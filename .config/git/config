@@ -6,6 +6,8 @@
 	cmm = commit -m
 	a = add
 	au = add -u
+	b = branch
+	c = checkout
         # Untracked filesを表示せず，not stagedと，stagedだけの状態を出力する
         stt = status -uno
         # 行ごとの差分じゃなくて，単語レベルでの差分を色付きで表示する
