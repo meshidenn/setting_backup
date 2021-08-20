@@ -7,7 +7,7 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
+;; (package-initialize)
 
 (if (not (boundp 'MULE))
     (if (featurep 'xemacs)
@@ -65,13 +65,13 @@
 (add-to-list 'package-archives
 	     '("melpa". "https://melpa.org/packages/"))
 
-(package-initialize)
+;; (package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; caskの読み込み
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'cask "/usr/local/opt/cask/cask.el")
-(cask-initialize)
+;; (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; multi-term
@@ -83,18 +83,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Elpy を有効化
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(elpy-enable)
+; (elpy-enable)
 ;;; 使用する Anaconda の仮想環境を設定
-(defvar venv-default "~/.pyenv/versions/anaconda3-4.3.1/envs/")
+; (defvar venv-default "~/.pyenv/versions/anaconda3-4.3.1/envs/")
 ;;; virtualenv を使っているなら次のようなパス
-(defvar venv-default "~/.virtualenvs/hoge")
+; (defvar venv-default "~/.virtualenvs/hoge")
 ;;; デフォルト環境を有効化
 ;;(pyvenv-activate venv-default)
 ;;; REPL 環境に IPython を使う
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt")
+; (setq python-shell-interpreter "jupyter"
+;       python-shell-interpreter-args "console --simple-prompt")
 ;;; 自動補完のバックエンドとして Rope か Jedi を選択
-(setq elpy-rpc-backend "jedi")
+; (setq elpy-rpc-backend "jedi")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; C and C++
@@ -145,7 +145,7 @@
 (set-face-background 'mode-line "black")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; スクロールバーを右端に表示
-(set-scroll-bar-mode 'right)
+;; (set-scroll-bar-mode 'right)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; スクロールバーを非表示
 ;;(scroll-bar-mode -1)
@@ -157,7 +157,7 @@
 (display-time)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;ツールバーを消す
-(tool-bar-mode 0)
+;; (tool-bar-mode 0)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;メニューバーを消す
 (menu-bar-mode 0)
@@ -465,15 +465,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flycheck
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when (require 'flycheck nil t)
-  (remove-hook 'elpy-modules 'elpy-module-flymake)
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; (when (require 'flycheck nil t)
+;;   (remove-hook 'elpy-modules 'elpy-module-flymake)
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-(define-key elpy-mode-map (kbd "C-c C-v") 'helm-flycheck)
-(require 'smartrep)   
-(smartrep-define-key elpy-mode-map "C-c"
-  '(("C-n" . flycheck-next-error)
-    ("C-p" . flycheck-previous-error)))
+;; (define-key elpy-mode-map (kbd "C-c C-v") 'helm-flycheck)
+;; (require 'smartrep)   
+;; (smartrep-define-key elpy-mode-map "C-c"
+;;   '(("C-n" . flycheck-next-error)
+;;     ("C-p" . flycheck-previous-error)))
 
 ;; google-cpplint
 ;;(eval-after-load 'flycheck
@@ -487,15 +487,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'flymake-google-cpplint)
-(add-hook 'c-mode-hook 'flymake-google-cpplint-load)
-(add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
+;; (require 'flymake-google-cpplint)
+;; (add-hook 'c-mode-hook 'flymake-google-cpplint-load)
+;; (add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
 
-(custom-set-variables
- '(flymake-google-cpplint-verbose "3")
- '(flymake-google-cpplint-linelength "120")
- )
+;; (custom-set-variables
+;;  '(flymake-google-cpplint-verbose "3")
+;;  '(flymake-google-cpplint-linelength "120")
+;;  )
 
-(custom-set-variables
- '(flymake-google-cpplint-command "/Users/hiroki-iida/.pyenv/shims/cpplint"))
+;; (custom-set-variables
+;;  '(flymake-google-cpplint-command "/Users/hiroki-iida/.pyenv/shims/cpplint"))
 
