@@ -11,7 +11,8 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 
 # starship
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+mkdir -p ~/.local/bin
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 # z
@@ -27,5 +28,7 @@ echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
 echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
 echo "source /usr/local/etc/bash_completion.d/git-completion.bash" >> ~/.bashrc
 echo "__git_complete g __git_main" >> /usr/local/etc/bash_completion.d/git-completion.bash
+
+echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc
 
 source ~/.bashrc
