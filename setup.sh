@@ -1,19 +1,15 @@
 #!/bin/bash
 
-cp -r .config ~/
-cp .tmux.conf ~/
-cp -r .emacs.d ~/
-cp .bashrc ~/
+PATH_TO_SCRIPT=$1
+
+cp -r $PATH_TO_SCRIPT/.config ~/
+cp $PATH_TO_SCRIPT/.tmux.conf ~/
+cp -r $PATH_TO_SCRIPT/.emacs.d ~/
+cp $PATH_TO_SCRIPT/.bashrc ~/
 
 # fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
-
-
-# starship
-mkdir -p ~/.local/bin
-sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 # z
 mkdir .commands
@@ -23,6 +19,14 @@ echo ". ~/.commands/z/z.sh" >> ~/.bashrc
 # poetry
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
 echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
+
+cd $HOME
+
+# starship
+mkdir -p ~/.local/bin
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
+
 
 # git completion for mac
 echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
