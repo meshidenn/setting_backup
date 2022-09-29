@@ -17,7 +17,7 @@ git clone https://github.com/rupa/z.git ~/.commands/z/
 echo ". ~/.commands/z/z.sh" >> ~/.bashrc
 
 # poetry
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+curl -sSL https://install.python-poetry.org | python3 -
 echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
 
 cd $HOME
@@ -29,8 +29,13 @@ echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 
 # git completion for mac
+## MAC
 echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
 echo "source /usr/local/etc/bash_completion.d/git-completion.bash" >> ~/.bashrc
+
+## UBUNTU
+echo "source /usr/share/bash-completion/completions/git" >> ~/.bashrc
+
 echo "__git_complete g __git_main" >> /usr/local/etc/bash_completion.d/git-completion.bash
 
 echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc
