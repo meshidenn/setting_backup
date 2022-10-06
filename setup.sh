@@ -31,12 +31,14 @@ echo 'eval "$(starship init bash)"' >> ~/.bashrc
 # git completion for mac
 ## MAC
 echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
-echo "source /usr/local/etc/bash_completion.d/git-completion.bash" >> ~/.bashrc
+cp /usr/local/etc/bash_completion.d/git-completion.bash .local/
 
 ## UBUNTU
-echo "source /usr/share/bash-completion/completions/git" >> ~/.bashrc
+cp /usr/share/bash-completion/completions/git .local/
+mv .local/git .local/git-completion.bash
 
-echo "__git_complete g __git_main" >> /usr/local/etc/bash_completion.d/git-completion.bash
+echo "__git_complete g __git_main" >> .local/git-completion.bash
+echo "source .local/git-completion.bash" >> ~/.bashrc
 
 echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc
 
