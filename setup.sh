@@ -38,7 +38,7 @@ cp /usr/share/bash-completion/completions/git .local/
 mv .local/git .local/git-completion.bash
 
 echo "__git_complete g __git_main" >> .local/git-completion.bash
-echo "source .local/git-completion.bash" >> ~/.bashrc
+echo "source ~/.local/git-completion.bash" >> ~/.bashrc
 
 echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc
 
