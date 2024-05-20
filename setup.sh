@@ -7,6 +7,11 @@ cp $PATH_TO_SCRIPT/.tmux.conf ~/
 cp -r $PATH_TO_SCRIPT/.emacs.d ~/
 cp $PATH_TO_SCRIPT/.bashrc ~/
 
+# starship
+mkdir -p ~/.local/bin
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
+
 # fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
@@ -22,16 +27,10 @@ echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
 
 cd $HOME
 
-# starship
-mkdir -p ~/.local/bin
-sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
-
-
 # git completion for mac
 ## MAC
-echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
-cp /usr/local/etc/bash_completion.d/git-completion.bash .local/
+# echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
+# cp /usr/local/etc/bash_completion.d/git-completion.bash .local/
 
 ## UBUNTU
 cp /usr/share/bash-completion/completions/git .local/
