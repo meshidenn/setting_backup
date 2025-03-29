@@ -22,8 +22,12 @@ git clone https://github.com/rupa/z.git ~/.commands/z/
 echo ". ~/.commands/z/z.sh" >> ~/.bashrc
 
 # poetry
-curl -sSL https://install.python-poetry.org | python3 -
-echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
+# curl -sSL https://install.python-poetry.org | python3 -
+# echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
+
+# uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
 
 cd $HOME
 
