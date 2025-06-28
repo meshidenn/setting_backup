@@ -21,15 +21,19 @@ mkdir .commands
 git clone https://github.com/rupa/z.git ~/.commands/z/
 echo ". ~/.commands/z/z.sh" >> ~/.bashrc
 
-# poetry
-# curl -sSL https://install.python-poetry.org | python3 -
-# echo "export PATH=$PATH:$HOME/.local/bin"  >> ~/.bashrc
-
 # uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-
 cd $HOME
+
+# starship
+mkdir -p ~/.local/bin
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
+
+# kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # git completion for mac
 ## MAC

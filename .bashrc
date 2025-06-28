@@ -1,7 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-
+set -o vi
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -89,11 +89,15 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias g='git'
+alias idea='intellij-idea-ultimate'
+alias k="kubectl"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
+alias login01='gcloud compute ssh bastion --project speeda-193900 --zone asia-northeast1-a'
+alias cursor="/opt/cursor/cursor.AppImage --no-sandbox ./"
+alias gitpp="git pull -r --au && git push"
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -114,3 +118,16 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:${HOME}/.jdks/
+eval "$(starship init bash)"
+# source /usr/local/etc/bash_completion.d/git-prompt.sh
+# :source ~/.local/git-completion.bash
+# export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:~/.local/bin
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+. ~/.commands/z/z.sh
+source <(skaffold completion bash)
+. "$HOME/.rye/env"
+export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
+export PATH=${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH
+export PATH=${HOME}/.local/share/JetBrains/Toolbox/scripts:${PATH}
