@@ -5,10 +5,29 @@ cp -r .config $HOME
 cp -r .tmux.conf $HOME
 cp -r .bashrc $HOME
 
+# mise
+echo setup mise
+curl https://mise.run | sh
+~/.local/bin/mise --version
+echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+mise use --global node
+node -v
+
+# claude
+echo setup claude code
+npm install -g @anthropic-ai/claude-code
+cp -r .claude $HOME
+
+# gemini-cli
+echo setup gemini cli
+npm install -g @google/gemini-cli
+
+pushd ${HOME}
+
 # starship
 echo setup starship
 mkdir -p ~/.local/bin
-sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b .local/bin
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b ${HOME}/.local/bin
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 # fzf
@@ -33,22 +52,6 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-# mise
-echo setup mise
-curl https://mise.run | sh
-~/.local/bin/mise --version
-echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
-mise use --global node
-node -v
-
-# claude
-echo setup claude code
-npm install -g @anthropic-ai/claude-code
-cp -r .claude $HOME
-
-# gemini-cli
-echo setup gemini cli
-npm install -g @google/gemini-cli
 
 # git completion for mac
 ## MAC

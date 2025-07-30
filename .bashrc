@@ -126,7 +126,6 @@ eval "$(starship init bash)"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 . ~/.commands/z/z.sh
 source <(skaffold completion bash)
-. "$HOME/.rye/env"
 export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
 export PATH=${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH
