@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -96,7 +97,7 @@ alias k="kubectl"
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias login01='gcloud compute ssh bastion --project speeda-193900 --zone asia-northeast1-a'
-alias cursor="/opt/cursor/cursor.AppImage --no-sandbox ./"
+# alias cursor="/opt/cursor/cursor.AppImage --no-sandbox ./"
 alias gitpp="git pull -r --au && git push"
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -127,6 +128,13 @@ eval "$(starship init bash)"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(zoxide init bash)"
 source <(skaffold completion bash)
+<<<<<<< HEAD:bash/.bashrc
+=======
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+. "$HOME/.rye/env"
+eval "$(pyenv init -)"
+eval "$(ssh-agent -s)"
 export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
 export PATH=${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH
@@ -137,3 +145,14 @@ eval "$(~/.local/bin/mise activate bash)"
 eval "$(starship init bash)"
 source ~/.local/git-completion.bash
 export PATH=/home/hiroki/miniconda3/bin:/home/hiroki/miniconda3/condabin:/home/hiroki/.local/share/mise/installs/node/24.3.0/bin:/home/hiroki/.local/bin:/home/hiroki/.local/share/JetBrains/Toolbox/scripts:/home/hiroki/.local/share/aquaproj-aqua/bin:/home/hiroki/.krew/bin:/home/hiroki-iida/.jdks/corretto-21.0.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:/home/hiroki/.jdks/:/home/hiroki/.fzf/bin:/snap/bin:~/.local/bin
+eval "$(/home/hiroki-iida/.local/bin/mise activate bash)"
+
+alias claude="/home/hiroki-iida/.claude/local/claude"
+export GOOGLE_GENAI_USE_VERTEXAI=true
+export GOOGLE_CLOUD_PROJECT=speeda-161813
+export GOOGLE_CLOUD_LOCATION=us-central1
+
+# local otel
+export GEMINI_TELEMETRY_ENABLED=true
+export GEMINI_TELEMETRY_TARGET=local
+export GEMINI_TELEMETRY_OUTFILE='.gemini/telemetry.log'
