@@ -1,9 +1,43 @@
 #!/bin/bash
+set -e
 
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-cp -r .config $HOME
-cp -r .tmux.conf $HOME
-cp -r .bashrc $HOME
+# GNU Stow のインストール
+echo "Installing stow..."
+if ! command -v stow &> /dev/null; then
+    if command -v apt &> /dev/null; then
+        sudo apt update && sudo apt install -y stow
+    elif command -v brew &> /dev/null; then
+        brew install stow
+    fi
+fi
+
+# 既存のファイルをバックアップ（シンボリックリンクでない場合）
+backup_if_exists() {
+    local target="$HOME/$1"
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+        echo "Backing up $target to $target.backup"
+        mv "$target" "$target.backup"
+    fi
+}
+
+echo "Backing up existing files..."
+backup_if_exists ".bashrc"
+backup_if_exists ".bash_profile"
+backup_if_exists ".profile"
+backup_if_exists ".tmux.conf"
+backup_if_exists ".config/git"
+backup_if_exists ".config/starship.toml"
+backup_if_exists ".claude"
+
+# 必要なディレクトリを作成
+mkdir -p "$HOME/.config"
+
+# Stow でシンボリックリンク作成
+echo "Stowing dotfiles..."
+cd "$DOTFILES_DIR"
+stow -v bash tmux git starship claude
 
 # mise
 echo setup mise
@@ -16,7 +50,6 @@ node -v
 # claude
 echo setup claude code
 npm install -g @anthropic-ai/claude-code
-cp -r .claude $HOME
 
 # gemini-cli
 echo setup gemini cli
