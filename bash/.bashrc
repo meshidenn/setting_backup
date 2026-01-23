@@ -124,7 +124,7 @@ eval "$(starship init bash)"
 # :source ~/.local/git-completion.bash
 # export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:~/.local/bin
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-. ~/.commands/z/z.sh
+eval "$(zoxide init bash)"
 source <(skaffold completion bash)
 export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"

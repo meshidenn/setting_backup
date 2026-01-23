@@ -68,11 +68,9 @@ echo setup fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
-# z
-echo setup z
-mkdir .commands
-git clone https://github.com/rupa/z.git ~/.commands/z/
-echo ". ~/.commands/z/z.sh" >> ~/.bashrc
+# zoxide
+echo setup zoxide
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
 # uv
 echo setup uv
