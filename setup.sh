@@ -6,10 +6,21 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 # GNU Stow のインストール
 echo "Installing stow..."
 if ! command -v stow &> /dev/null; then
-    if command -v apt &> /dev/null; then
-        sudo apt update && sudo apt install -y stow
-    elif command -v brew &> /dev/null; then
+    if command -v brew &> /dev/null; then
         brew install stow
+    elif command -v apt &> /dev/null && sudo -n true 2>/dev/null; then
+        sudo apt update && sudo apt install -y stow
+    else
+        # ソースからローカルインストール
+        echo "Installing stow from source..."
+        mkdir -p ~/.local/bin ~/.local/src
+        cd ~/.local/src
+        curl -LO http://ftp.gnu.org/gnu/stow/stow-latest.tar.gz
+        tar xzf stow-latest.tar.gz
+        cd stow-*/
+        ./configure --prefix="$HOME/.local"
+        make install
+        cd "$DOTFILES_DIR"
     fi
 fi
 
@@ -65,8 +76,12 @@ echo 'eval "$(starship init bash)"' >> ~/.bashrc
 
 # fzf
 echo setup fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+if [ ! -d ~/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+else
+    echo "fzf already installed, skipping"
+fi
 
 # zoxide
 echo setup zoxide
