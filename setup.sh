@@ -52,21 +52,30 @@ stow -v bash tmux git starship claude
 
 # mise
 echo setup mise
-curl https://mise.run | sh
-~/.local/bin/mise --version
-eval "$(~/.local/bin/mise activate bash)"
-mise use --global node
-node -v
+if ! command -v mise &>/dev/null; then
+    curl https://mise.run | sh
+    eval "$(~/.local/bin/mise activate bash)"
+    mise use --global node
+else
+    echo "mise already installed, skipping"
+    eval "$(~/.local/bin/mise activate bash)"
+fi
 
 # claude
 echo setup claude code
-npm install -g @anthropic-ai/claude-code
+if ! command -v claude &>/dev/null; then
+    npm install -g @anthropic-ai/claude-code
+else
+    echo "claude already installed, skipping"
+fi
 
 # gemini-cli
 echo setup gemini cli
-npm install -g @google/gemini-cli
-
-pushd ${HOME}
+if ! command -v gemini &>/dev/null; then
+    npm install -g @google/gemini-cli
+else
+    echo "gemini already installed, skipping"
+fi
 
 # starship
 echo setup starship
@@ -96,30 +105,35 @@ fi
 
 # uv
 echo setup uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-cd $HOME
+if ! command -v uv &>/dev/null; then
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+else
+    echo "uv already installed, skipping"
+fi
 
 # kubectl
 echo setup kubectl
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-chmod +x kubectl
-mv kubectl ~/.local/bin/
+if ! command -v kubectl &>/dev/null; then
+    cd /tmp
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+    echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+    chmod +x kubectl
+    mv kubectl ~/.local/bin/
+    cd "$DOTFILES_DIR"
+else
+    echo "kubectl already installed, skipping"
+fi
 
+# git completion
+echo setup git completion
+if [ ! -f ~/.local/git-completion.bash ]; then
+    if [ -f /usr/share/bash-completion/completions/git ]; then
+        cp /usr/share/bash-completion/completions/git ~/.local/git-completion.bash
+        echo "__git_complete g __git_main" >> ~/.local/git-completion.bash
+    fi
+else
+    echo "git completion already installed, skipping"
+fi
 
-# git completion for mac
-## MAC
-# echo "source /usr/local/etc/bash_completion.d/git-prompt.sh" >> ~/.bashrc
-# cp /usr/local/etc/bash_completion.d/git-completion.bash .local/
-
-## UBUNTU
-cp /usr/share/bash-completion/completions/git .local/
-mv .local/git .local/git-completion.bash
-
-echo "__git_complete g __git_main" >> .local/git-completion.bash
-echo "source ~/.local/git-completion.bash" >> ~/.bashrc
-
-echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc
-
-source ~/.bashrc
+echo "Setup complete!"
