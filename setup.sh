@@ -70,9 +70,12 @@ pushd ${HOME}
 
 # starship
 echo setup starship
-mkdir -p ~/.local/bin
-sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b ${HOME}/.local/bin
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
+if ! command -v starship &>/dev/null; then
+    mkdir -p ~/.local/bin
+    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b ${HOME}/.local/bin -y
+else
+    echo "starship already installed, skipping"
+fi
 
 # fzf
 echo setup fzf
@@ -85,7 +88,11 @@ fi
 
 # zoxide
 echo setup zoxide
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+if ! command -v zoxide &>/dev/null; then
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+else
+    echo "zoxide already installed, skipping"
+fi
 
 # uv
 echo setup uv
