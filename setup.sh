@@ -54,7 +54,7 @@ stow -v bash tmux git starship claude
 echo setup mise
 curl https://mise.run | sh
 ~/.local/bin/mise --version
-echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+eval "$(~/.local/bin/mise activate bash)"
 mise use --global node
 node -v
 

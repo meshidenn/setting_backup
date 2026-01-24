@@ -119,42 +119,18 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:${HOME}/.jdks/
-eval "$(starship init bash)"
-# source /usr/local/etc/bash_completion.d/git-prompt.sh
-# :source ~/.local/git-completion.bash
-# export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:~/.local/bin
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# PATH
 export PATH="$HOME/.local/bin:$PATH"
-eval "$(zoxide init bash)"
-source <(skaffold completion bash)
-<<<<<<< HEAD:bash/.bashrc
-=======
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-. "$HOME/.rye/env"
-eval "$(pyenv init -)"
-eval "$(ssh-agent -s)"
-export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
-export PATH=${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH
-export PATH=${HOME}/.local/share/JetBrains/Toolbox/scripts:${PATH}
-eval "$(~/.local/bin/mise activate bash)"
-eval "$(starship init bash)"
-eval "$(~/.local/bin/mise activate bash)"
-eval "$(starship init bash)"
-source ~/.local/git-completion.bash
-export PATH=/home/hiroki/miniconda3/bin:/home/hiroki/miniconda3/condabin:/home/hiroki/.local/share/mise/installs/node/24.3.0/bin:/home/hiroki/.local/bin:/home/hiroki/.local/share/JetBrains/Toolbox/scripts:/home/hiroki/.local/share/aquaproj-aqua/bin:/home/hiroki/.krew/bin:/home/hiroki-iida/.jdks/corretto-21.0.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:/home/hiroki/.jdks/:/home/hiroki/.fzf/bin:/snap/bin:~/.local/bin
-eval "$(/home/hiroki-iida/.local/bin/mise activate bash)"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
+export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:$PATH"
 
-alias claude="/home/hiroki-iida/.claude/local/claude"
-export GOOGLE_GENAI_USE_VERTEXAI=true
-export GOOGLE_CLOUD_PROJECT=speeda-161813
-export GOOGLE_CLOUD_LOCATION=us-central1
+# Tools
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.local/git-completion.bash ] && source ~/.local/git-completion.bash
+command -v skaffold &>/dev/null && source <(skaffold completion bash)
 
-# local otel
-export GEMINI_TELEMETRY_ENABLED=true
-export GEMINI_TELEMETRY_TARGET=local
-export GEMINI_TELEMETRY_OUTFILE='.gemini/telemetry.log'
-eval "$(~/.local/bin/mise activate bash)"
-eval "$(starship init bash)"
+# Shell integrations (at the end)
+command -v mise &>/dev/null && eval "$(mise activate bash)"
+command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
+command -v starship &>/dev/null && eval "$(starship init bash)"
