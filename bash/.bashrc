@@ -156,3 +156,5 @@ export GOOGLE_CLOUD_LOCATION=us-central1
 export GEMINI_TELEMETRY_ENABLED=true
 export GEMINI_TELEMETRY_TARGET=local
 export GEMINI_TELEMETRY_OUTFILE='.gemini/telemetry.log'
+eval "$(~/.local/bin/mise activate bash)"
+eval "$(starship init bash)"

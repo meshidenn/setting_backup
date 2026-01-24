@@ -13,6 +13,9 @@
         # 行ごとの差分じゃなくて，単語レベルでの差分を色付きで表示する
         difff = diff --word-diff
 	
+[core]
+	editor = vim
+
 [user]
 	name = meshidenn
 	email = mesitahiro@hotmail.com
