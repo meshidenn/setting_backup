@@ -18,3 +18,6 @@ style_root = "black bold"
 format = "user: [$user]($style) "
 disabled = false
 show_always = true
+
+[kubernetes]
+disabled = false
