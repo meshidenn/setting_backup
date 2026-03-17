@@ -9,6 +9,14 @@ case $- in
       *) return;;
 esac
 
+# aqua グローバル設定（skaffold など）
+export AQUA_GLOBAL_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/aquaproj-aqua/aqua.yaml"
+
+# SSH agent (keychain) — 1回パスフレーズを入れたら使い回す
+if command -v keychain &>/dev/null; then
+    eval "$(keychain --eval --quiet ~/.ssh/id_ub_ed25519)"
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -123,12 +131,27 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
+export PATH=/home/hiroki/miniconda3/bin:/home/hiroki/miniconda3/condabin:/home/hiroki/.local/share/mise/installs/node/24.3.0/bin:/home/hiroki/.local/bin:/home/hiroki/.local/share/JetBrains/Toolbox/scripts:/home/hiroki/.local/share/aquaproj-aqua/bin:/home/hiroki/.krew/bin:/home/hiroki-iida/.jdks/corretto-21.0.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:/home/hiroki/.jdks/:/home/hiroki/.fzf/bin:/snap/bin:~/.local/bin
+eval "$(~/.local/bin/mise activate bash)"
+eval "$(starship init bash)"
+eval "$(/home/hiroki-iida/.local/bin/mise activate bash)"
+eval "$(zoxide init bash)"
+
+# for local
+. "$HOME/.rye/env"
+eval "$(pyenv init -)"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
 export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:$PATH"
 
 # Tools
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.local/git-completion.bash ] && source ~/.local/git-completion.bash
+source ~/.local/git-completion.bash
 command -v skaffold &>/dev/null && source <(skaffold completion bash)
+command -v kubectl &>/dev/null && source <(kubectl completion bash) && complete -o default -F __start_kubectl k
 
 # Shell integrations (at the end)
 command -v mise &>/dev/null && eval "$(mise activate bash)"

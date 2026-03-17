@@ -9,14 +9,7 @@ fi
 
 export PATH=$PATH:$HOME/.local/bin:$HOME/bin
 
-# SSH agent (keychain)
-if command -v keychain &>/dev/null; then
-    eval "$(keychain --eval --quiet \
-        ~/.ssh/id_abci3.0_ed25519 \
-        ~/.ssh/id_rsa_abci \
-        ~/.ssh/id_rsa_github \
-        ~/.ssh/matsuo_llm_ed25519)"
-fi
+# SSH agent は .bashrc の keychain で共通利用
 # export PYENV_ROOT="$HOME/.pyenv"
 # export PATH="$PATH:$PYENV_ROOT/bin"
 # eval "$(pyenv init -)"
