@@ -139,9 +139,6 @@ eval "$(zoxide init bash)"
 
 # for local
 . "$HOME/.rye/env"
-eval "$(pyenv init -)"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
 export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:$PATH"
