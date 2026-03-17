@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "PATH": "/home/hiroki/.nodenv/versions/22.22.1/bin:/home/hiroki/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "WebSearch",
+      "WebFetch",
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "deny": [
+      "Bash(rm *)",
+      "Bash(rmdir *)",
+      "Bash(git push*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean*)",
+      "Bash(git checkout -- *)",
+      "Bash(git branch -D *)",
+      "Bash(sudo *)",
+      "Bash(kill *)",
+      "Bash(pkill *)",
+      "Read(.env)",
+      "Read(.env.*)"
+    ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' '承認待ちです' 2>/dev/null || true",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\\.py'; then ~/.local/bin/ruff format --quiet $(echo \"$CLAUDE_TOOL_INPUT\" | grep -o '[^ ]*\\.py') 2>/dev/null; ~/.local/bin/ruff check --fix --quiet $(echo \"$CLAUDE_TOOL_INPUT\" | grep -o '[^ ]*\\.py') 2>/dev/null; fi",
+            "timeout": 10000
+          },
+          {
+            "type": "command",
+            "command": "echo '{\"timestamp\":\"'$(date +%Y-%m-%dT%H:%M:%S)'\",\"tool\":\"'$CLAUDE_TOOL'\",\"input\":'$(echo \"$CLAUDE_TOOL_INPUT\" | head -c 500 | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo '\"\"')'}' >> ~/.claude/logs/changes.jsonl"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if ! echo \"$CLAUDE_TOOL_INPUT\" | grep -qE '^(git (status|log|diff|branch)|ls |pwd|which |find |cat |head |tail |wc |tree |file |grep |rg )'; then echo '{\"timestamp\":\"'$(date +%Y-%m-%dT%H:%M:%S)'\",\"tool\":\"Bash\",\"input\":'$(echo \"$CLAUDE_TOOL_INPUT\" | head -c 500 | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo '\"\"')'}' >> ~/.claude/logs/changes.jsonl; fi"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' '処理が完了しました' 2>/dev/null || true; if [ -f ~/.claude/logs/changes.jsonl ]; then python3 -c \"import json,sys,datetime;cutoff=(datetime.datetime.now()-datetime.timedelta(days=10)).strftime('%Y-%m-%d');lines=[l for l in open(sys.argv[1]) if json.loads(l).get('timestamp','')>=cutoff];open(sys.argv[1],'w').writelines(lines)\" ~/.claude/logs/changes.jsonl 2>/dev/null; fi",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' 'サブエージェントが完了しました' 2>/dev/null || true",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "terraform-code-generation@hashicorp": true,
+    "frontend-design@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "agent-sdk-dev@claude-plugins-official": true,
+    "Notion@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "playground@claude-plugins-official": true,
+    "sentry@claude-plugins-official": true,
+    "huggingface-skills@claude-plugins-official": true,
+    "deep-implement@piercelamb-plugins": true,
+    "terraform-provider-development@hashicorp": true,
+    "terraform-module-generation@hashicorp": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "piercelamb-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "piercelamb/deep-implement"
+      }
+    },
+    "hashicorp": {
+      "source": {
+        "source": "github",
+        "repo": "hashicorp/agent-skills"
+      }
+    }
+  }
+}
