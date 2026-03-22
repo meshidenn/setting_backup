@@ -41,6 +41,8 @@ backup_if_exists ".tmux.conf"
 backup_if_exists ".config/git"
 backup_if_exists ".config/starship.toml"
 backup_if_exists ".claude"
+backup_if_exists ".agents"
+backup_if_exists ".gemini"
 
 # 必要なディレクトリを作成
 mkdir -p "$HOME/.config"
@@ -48,7 +50,7 @@ mkdir -p "$HOME/.config"
 # Stow でシンボリックリンク作成
 echo "Stowing dotfiles..."
 cd "$DOTFILES_DIR"
-stow -v bash tmux git starship claude
+stow -v bash tmux git starship claude agents gemini
 
 # mise
 echo setup mise
