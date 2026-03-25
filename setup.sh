@@ -138,4 +138,12 @@ else
     echo "git completion already installed, skipping"
 fi
 
+# bun
+echo setup bun
+if ! command -v uv &>/dev/null; then
+    curl -fsSL https://bun.sh/install | bash
+else
+    echo "bun already installed, skipping"
+fi
+
 echo "Setup complete!"
