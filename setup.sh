@@ -66,17 +66,25 @@ fi
 # claude
 echo setup claude code
 if ! command -v claude &>/dev/null; then
-    npm install -g @anthropic-ai/claude-code
+    curl -fsSL https://claude.ai/install.sh | bash
 else
     echo "claude already installed, skipping"
 fi
 
-# gemini-cli
-echo setup gemini cli
-if ! command -v gemini &>/dev/null; then
-    npm install -g @google/gemini-cli
+# codex
+echo setup codex
+if ! command -v codex &>/dev/null; then
+    curl -fsSL https://chatgpt.com/codex/install.sh | sh
 else
-    echo "gemini already installed, skipping"
+    echo "codex already installed, skipping"
+fi
+
+# gemini-cli
+echo setup antigravity cli
+if ! command -v agy &>/dev/null; then
+       curl -fsSL https://antigravity.google/cli/install.sh | bash
+else
+    echo "antigravity already installed, skipping"
 fi
 
 # starship
