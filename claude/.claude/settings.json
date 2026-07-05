@@ -79,6 +79,10 @@
       }
     }
   },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
   "tui": "fullscreen",
   "theme": "dark",
   "model": "claude-fable-5[1m]"

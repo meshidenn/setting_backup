@@ -6,6 +6,7 @@ claude/**
 !claude/.claude/CLAUDE.md
 !claude/.claude/settings.json
 !claude/.claude/skills
+!claude/.claude/statusline.sh
 
 # gemini のランタイム状態（会話DB・installation_id・キャッシュ等）は追跡しない
 gemini/.gemini/antigravity/
