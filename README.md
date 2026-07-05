@@ -5,7 +5,7 @@ GNU Stow を使った dotfiles 管理
 ## セットアップ
 
 ```bash
-git clone git@github.com:meshidenn/setting_backup.git ~/dotfiles
+git clone git@github.com:meshidenn/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./setup.sh
 ```

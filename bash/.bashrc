@@ -32,7 +32,7 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
+# If set, the pattern "**" used in a nathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
@@ -99,7 +99,8 @@ alias la='ls -A'
 alias l='ls -CF'
 alias g='git'
 alias idea='intellij-idea-ultimate'
-alias k="kubectl"
+alias k="kubie"
+alias k9s="k9s --readonly"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -131,7 +132,7 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
-export PATH=/home/hiroki/miniconda3/bin:/home/hiroki/miniconda3/condabin:/home/hiroki/.local/share/mise/installs/node/24.3.0/bin:/home/hiroki/.local/bin:/home/hiroki/.local/share/JetBrains/Toolbox/scripts:/home/hiroki/.local/share/aquaproj-aqua/bin:/home/hiroki/.krew/bin:/home/hiroki-iida/.jdks/corretto-21.0.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:/home/hiroki/.jdks/:/home/hiroki/.fzf/bin:/snap/bin:~/.local/bin
+# export PATH=/home/hiroki/miniconda3/bin:/home/hiroki/miniconda3/condabin:/home/hiroki/.local/share/mise/installs/node/24.3.0/bin:/home/hiroki/.local/bin:/home/hiroki/.local/share/JetBrains/Toolbox/scripts:/home/hiroki/.local/share/aquaproj-aqua/bin:/home/hiroki/.krew/bin:/home/hiroki-iida/.jdks/corretto-21.0.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:/home/hiroki/.jdks/:/home/hiroki/.fzf/bin:/snap/bin:~/.local/bin
 eval "$(~/.local/bin/mise activate bash)"
 eval "$(starship init bash)"
 eval "$(${HOME}/.local/bin/mise activate bash)"
@@ -154,3 +155,9 @@ command -v kubectl &>/dev/null && source <(kubectl completion bash) && complete 
 command -v mise &>/dev/null && eval "$(mise activate bash)"
 command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
 command -v starship &>/dev/null && eval "$(starship init bash)"
+
+#uv setting
+# 常に「7日前以前」のパッケージのみを対象にする
+export UV_EXCLUDE_NEWER="7d"
+
+. "$HOME/.local/bin/env"

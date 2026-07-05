@@ -17,17 +17,17 @@ WORKDIR $HOME/
 RUN pip install pandas sklearn tqdm gensim scipy jupyter ipython
 
 ## tmuxの設定
-RUN git clone git://github.com/meshidenn/setting_backup.git ${HOME}/setting_backup 
-RUN cp ${HOME}/setting_backup/.tmux.conf ./
+RUN git clone git://github.com/meshidenn/dotfiles.git ${HOME}/dotfiles
+RUN cp ${HOME}/dotfiles/tmux/.tmux.conf ./
 
 ## emacsの設定
 RUN curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python
 ENV PATH=$HOME/.cask/bin:$PATH
 RUN cask upgrade
-RUN cp -r ${HOME}/setting_backup/.emacs.d ./
+RUN cp -r ${HOME}/dotfiles/.emacs.d ./
 RUN cd ~/.emacs.d && cask install
 
 ## bashrc
-RUN cp ${HOME}/setting_backup/.bashrc_ubuntu .bashrc
+RUN cp ${HOME}/dotfiles/bash/.bashrc .bashrc
 RUN source .bashrc
 WORKDIR ${HOME}/work
