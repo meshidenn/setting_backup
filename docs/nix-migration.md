@@ -19,7 +19,7 @@
 ### リポジトリ構成（Stow パッケージ）
 
 ```
-dotfiles/            # ※ローカル名。旧 setting_backup。git remote は meshidenn/setting_backup のまま
+dotfiles/            # 旧 setting_backup。GitHub も meshidenn/dotfiles にリネーム済み（2026-07-05）
 ├── agents/.agents/          # ★クロスエージェント正本: AGENTS.md + skills/(deep-research, git-issue-flow, retrospect)
 ├── claude/.claude/          # CLAUDE.md(→AGENTS.mdへのsymlink), settings.json, skills(→agents/skillsへのsymlink)
 ├── bash/                    # .bashrc, .bash_profile, .profile
@@ -104,4 +104,4 @@ home/
 
 - 監査時のプラン全文: `~/.claude/plans/claude-code-pc-jiggly-seahorse.md`
 - Claude Code の memory にも構成メモあり（agents-md-single-source / dotfiles-stow-layout）
-- リポジトリのローカル名 `setting_backup` → `dotfiles` リネームが未実施の場合、本ドキュメント内のパスは読み替えること
+- Linux 機ではリモート URL の更新が必要: `git remote set-url origin git@github.com:meshidenn/dotfiles.git`（旧 URL もリダイレクトで当面は動く）。ローカルディレクトリ名も `~/dotfiles` に揃えるなら「stow -D 全解除 → mv → 再 stow」の順で
