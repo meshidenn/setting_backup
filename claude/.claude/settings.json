@@ -33,7 +33,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"承認待ちです\" with title \"Claude Code\" sound name \"Glass\"'",
+            "command": "if command -v osascript >/dev/null 2>&1; then osascript -e 'display notification \"承認待ちです\" with title \"Claude Code\" sound name \"Glass\"'; elif command -v notify-send >/dev/null 2>&1; then notify-send 'Claude Code' '承認待ちです'; fi; true",
             "async": true
           }
         ]
@@ -45,7 +45,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"処理が完了しました\" with title \"Claude Code\"'",
+            "command": "if command -v osascript >/dev/null 2>&1; then osascript -e 'display notification \"処理が完了しました\" with title \"Claude Code\"'; elif command -v notify-send >/dev/null 2>&1; then notify-send 'Claude Code' '処理が完了しました'; fi; true",
             "async": true
           }
         ]
@@ -57,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.py) ~/.local/bin/uvx ruff format --quiet \"$f\" 2>/dev/null; ~/.local/bin/uvx ruff check --fix --quiet \"$f\" 2>/dev/null;; esac; true",
+            "command": "command -v jq >/dev/null 2>&1 || exit 0; f=$(jq -r '.tool_input.file_path // empty' 2>/dev/null); case \"$f\" in *.py) ~/.local/bin/uvx ruff format --quiet \"$f\" 2>/dev/null; ~/.local/bin/uvx ruff check --fix --quiet \"$f\" 2>/dev/null;; esac; true",
             "timeout": 30
           }
         ]
