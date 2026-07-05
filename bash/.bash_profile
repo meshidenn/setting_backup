@@ -15,4 +15,5 @@ export PATH=$PATH:$HOME/.local/bin:$HOME/bin
 # eval "$(pyenv init -)"
 # eval "$(pyenv init --path)"
 
-. "$HOME/.local/bin/env"
+
+eval "$(/opt/homebrew/bin/brew shellenv bash)"

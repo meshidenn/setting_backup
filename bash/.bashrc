@@ -134,11 +134,11 @@ export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua
 export PATH=/home/hiroki/miniconda3/bin:/home/hiroki/miniconda3/condabin:/home/hiroki/.local/share/mise/installs/node/24.3.0/bin:/home/hiroki/.local/bin:/home/hiroki/.local/share/JetBrains/Toolbox/scripts:/home/hiroki/.local/share/aquaproj-aqua/bin:/home/hiroki/.krew/bin:/home/hiroki-iida/.jdks/corretto-21.0.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/hiroki-iida/.local/bin:/home/hiroki/.jdks/:/home/hiroki/.fzf/bin:/snap/bin:~/.local/bin
 eval "$(~/.local/bin/mise activate bash)"
 eval "$(starship init bash)"
-eval "$(/home/hiroki-iida/.local/bin/mise activate bash)"
+eval "$(${HOME}/.local/bin/mise activate bash)"
 eval "$(zoxide init bash)"
 
 # for local
-. "$HOME/.rye/env"
+# . "$HOME/.rye/env"
 export JAVA_HOME=/home/hiroki-iida/.jdks/corretto-21.0.3
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${JAVA_HOME}/bin:$PATH:/snap/bin"
 export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:$PATH"
@@ -146,7 +146,7 @@ export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:$PATH"
 # Tools
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.local/git-completion.bash ] && source ~/.local/git-completion.bash
-source ~/.local/git-completion.bash
+# source ~/.local/git-completion.bash
 command -v skaffold &>/dev/null && source <(skaffold completion bash)
 command -v kubectl &>/dev/null && source <(kubectl completion bash) && complete -o default -F __start_kubectl k
 
