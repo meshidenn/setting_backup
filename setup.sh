@@ -52,6 +52,11 @@ echo "Stowing dotfiles..."
 cd "$DOTFILES_DIR"
 stow -v bash tmux git starship claude agents gemini
 
+# Codex にも共通指示を届ける（正本は ~/.agents/AGENTS.md）
+echo "Linking codex AGENTS.md..."
+mkdir -p "$HOME/.codex"
+ln -sf "$HOME/.agents/AGENTS.md" "$HOME/.codex/AGENTS.md"
+
 # mise
 echo setup mise
 if ! command -v mise &>/dev/null; then
@@ -122,18 +127,18 @@ else
 fi
 
 # kubectl
-echo setup kubectl
-if ! command -v kubectl &>/dev/null; then
-    cd /tmp
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-    echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-    chmod +x kubectl
-    mv kubectl ~/.local/bin/
-    cd "$DOTFILES_DIR"
-else
-    echo "kubectl already installed, skipping"
-fi
+# echo setup kubectl
+# if ! command -v kubectl &>/dev/null; then
+#     cd /tmp
+#     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+#     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+#     echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+#     chmod +x kubectl
+#     mv kubectl ~/.local/bin/
+#     cd "$DOTFILES_DIR"
+# else
+#     echo "kubectl already installed, skipping"
+# fi
 
 # git completion
 echo setup git completion
