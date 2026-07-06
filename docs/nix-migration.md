@@ -1,7 +1,31 @@
 # Nix (home-manager) 移行 — 引き継ぎドキュメント
 
 作成: 2026-07-05（Claude Code セットアップ監査セッションにて）
-ステータス: **未着手**。このドキュメントを読んだエージェント/人が移行を実施する。
+ステータス: **Mac 側完了（2026-07-07, issue #1）。残りは Phase 5（Linux 実機）のみ。**
+
+## 移行結果サマリ（2026-07-07）
+
+- flake.nix + home/{common,darwin,linux}.nix + home/files/ を追加。Stow パッケージ bash/tmux/git/starship は削除、claude/agents/gemini は mkOutOfStoreSymlink の実体として存続
+- setup.sh は「Nix 案内 + home-manager switch + AI CLI インストーラ」のみに縮小
+- 適用コマンド: `nix run home-manager -- switch --flake ~/dotfiles#hiroki-iida@mac`(または `./setup.sh`)
+
+### Mac 側の注意点
+
+- tmux 設定は `~/.tmux.conf` から `~/.config/tmux/tmux.conf` に移動(home-manager 標準)
+- macOS の /bin/bash(3.2) 非互換のため darwin では bash completion 無効(旧構成と等価)
+- 旧 curl 版バイナリ(`~/.local/bin` の starship/zoxide/mise/uv、`~/.fzf`)は削除していない。PATH では `~/.local/bin` が nix-profile より先のため**当面 curl 版が優先される**。整理する場合は手動削除(要ユーザー判断)
+
+### Phase 5(Linux 実機)の手順
+
+1. `git remote set-url origin git@github.com:meshidenn/dotfiles.git` + ディレクトリ名を `~/dotfiles` に揃える(stow -D 全解除 → mv → clone し直しでも可)
+2. flake.nix の `hiroki-iida@linux` の arch と homeDirectory を実機に合わせて修正
+3. Determinate Nix インストール → `stow -D` 全解除 → `./setup.sh`
+4. home/linux.nix の `TODO(Phase 5)` 各行(keychain/aqua/JAVA_HOME/krew/JetBrains/alias 群)を実機で取捨選択
+5. 検証: 通知 hook(notify-send)、bash 起動エラーなし、PATH に他マシンの残骸がないこと
+
+---
+
+以下は移行前の計画資料(経緯の記録として保持)。
 
 ## ゴール
 
