@@ -8,4 +8,8 @@
   programs.bash.profileExtra = ''
     eval "$(/opt/homebrew/bin/brew shellenv bash)"
   '';
+
+  # macOS の /bin/bash は 3.2 で、home-manager の completion ブロック([[ -v ]])が
+  # 動かないため無効化(旧構成でも Mac では completion は読み込まれていなかった)
+  programs.bash.enableCompletion = false;
 }

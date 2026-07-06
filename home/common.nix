@@ -70,23 +70,25 @@ in
   # ===== git(旧 git/ stow パッケージ) =====
   programs.git = {
     enable = true;
-    userName = "meshidenn";
-    userEmail = "mesitahiro@hotmail.com";
-    aliases = {
-      gr = "log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'";
-      st = "status";
-      cm = "commit";
-      cmm = "commit -m";
-      a = "add";
-      au = "add -u";
-      b = "branch";
-      c = "checkout";
-      # Untracked files を表示せず、not staged と staged だけの状態を出力する
-      stt = "status -uno";
-      # 行ごとの差分じゃなくて、単語レベルでの差分を色付きで表示する
-      difff = "diff --word-diff";
-    };
-    extraConfig = {
+    settings = {
+      user = {
+        name = "meshidenn";
+        email = "mesitahiro@hotmail.com";
+      };
+      alias = {
+        gr = "log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'";
+        st = "status";
+        cm = "commit";
+        cmm = "commit -m";
+        a = "add";
+        au = "add -u";
+        b = "branch";
+        c = "checkout";
+        # Untracked files を表示せず、not staged と staged だけの状態を出力する
+        stt = "status -uno";
+        # 行ごとの差分じゃなくて、単語レベルでの差分を色付きで表示する
+        difff = "diff --word-diff";
+      };
       core.editor = "vim";
       # /opt/homebrew ハードコードをやめ、PATH 上の gh に解決させる
       credential."https://github.com".helper = [ "" "!gh auth git-credential" ];
