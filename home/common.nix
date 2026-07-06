@@ -97,13 +97,12 @@ in
   };
   xdg.configFile."git/ignore".source = ./files/git-ignore;
 
-  # ===== mutable 系 symlink(Phase 3 で有効化) =====
+  # ===== mutable 系 symlink =====
   # ⚠️ これらは実行時に書き込みが発生するため read-only の store symlink 化は厳禁。
   #    mkOutOfStoreSymlink で「repo 実体への書き込み可能 symlink」として張る(Stow と同じ挙動)。
   #    正本原則: エージェント指示の正本は agents/.agents/AGENTS.md のみ。
-  # TODO(Phase 3): stow -D claude agents gemini と同時に以下のコメントを解除して switch する
-  # home.file.".claude".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/claude/.claude";
-  # home.file.".agents".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/agents/.agents";
-  # home.file.".gemini".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini";
-  # home.file.".codex/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.agents/AGENTS.md";
+  home.file.".claude".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/claude/.claude";
+  home.file.".agents".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/agents/.agents";
+  home.file.".gemini".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/gemini/.gemini";
+  home.file.".codex/AGENTS.md".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.agents/AGENTS.md";
 }
