@@ -21,6 +21,8 @@ if [ -n "$1" ]; then
     PROFILE="$1"
 elif [ "$(uname)" = "Darwin" ]; then
     PROFILE="hiroki-iida@mac"
+elif [ "$(uname -m)" = "aarch64" ]; then
+    PROFILE="hiroki@linux-aarch64"
 else
     PROFILE="hiroki@linux"
 fi

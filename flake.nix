@@ -31,9 +31,15 @@
         modules = [ ./home/common.nix ./home/darwin.nix ];
       };
 
-      # TODO: Phase 5 で Linux 実機の arch(x86_64 か aarch64 か)を確認して確定する
+      # Linux は arch 違いの実機が複数あるため両方定義(setup.sh が uname -m で自動選択)
       homeConfigurations."hiroki@linux" = mkHome {
         system = "x86_64-linux";
+        username = "hiroki";
+        homeDirectory = "/home/hiroki";
+        modules = [ ./home/common.nix ./home/linux.nix ];
+      };
+      homeConfigurations."hiroki@linux-aarch64" = mkHome {
+        system = "aarch64-linux";
         username = "hiroki";
         homeDirectory = "/home/hiroki";
         modules = [ ./home/common.nix ./home/linux.nix ];
