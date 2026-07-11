@@ -5,6 +5,8 @@ let
   dotfilesDir = "${config.home.homeDirectory}/dotfiles";
 in
 {
+  imports = [ ./claude-settings.nix ];
+
   # home-manager 自身のバージョン互換基準(初回導入時の値から変えない)
   home.stateVersion = "25.05";
 

@@ -4,7 +4,10 @@
 claude/**
 !claude/.claude
 !claude/.claude/CLAUDE.md
-!claude/.claude/settings.json
+# settings.json は生成物(base + profile overlay から home-manager activation が生成)
+!claude/.claude/settings.base.json
+!claude/.claude/settings.personal.json
+!claude/.claude/settings.work.json
 !claude/.claude/skills
 !claude/.claude/statusline.sh
 
