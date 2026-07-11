@@ -44,5 +44,18 @@
         homeDirectory = "/home/hiroki";
         modules = [ ./home/common.nix ./home/linux.nix ];
       };
+
+      # 会社 Linux 機。uname では個人サーバーと区別できないため
+      # setup.sh の引数で明示指定する: ./setup.sh hiroki@work-linux
+      homeConfigurations."hiroki@work-linux" = mkHome {
+        system = "x86_64-linux";
+        username = "hiroki";
+        homeDirectory = "/home/hiroki";
+        modules = [
+          ./home/common.nix
+          ./home/linux.nix
+          { dotfiles.claudeSettingsProfile = "work"; }
+        ];
+      };
     };
 }
