@@ -1,162 +1,54 @@
 #!/bin/bash
+# dotfiles ブートストラップ
+# 設定・パッケージの実体は home-manager (flake) が管理する。
+# このスクリプトは (1) Nix の案内 (2) home-manager 適用 (3) AI CLI 群のインストールのみ行う。
 set -e
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# GNU Stow のインストール
-echo "Installing stow..."
-if ! command -v stow &> /dev/null; then
-    if command -v brew &> /dev/null; then
-        brew install stow
-    elif command -v apt &> /dev/null && sudo -n true 2>/dev/null; then
-        sudo apt update && sudo apt install -y stow
-    else
-        # ソースからローカルインストール
-        echo "Installing stow from source..."
-        mkdir -p ~/.local/bin ~/.local/src
-        cd ~/.local/src
-        curl -LO http://ftp.gnu.org/gnu/stow/stow-latest.tar.gz
-        tar xzf stow-latest.tar.gz
-        cd stow-*/
-        ./configure --prefix="$HOME/.local"
-        make install
-        cd "$DOTFILES_DIR"
-    fi
+# ===== 1. Nix (Determinate Systems 版。admin 権限が必要なため手動実行を促す) =====
+if ! command -v nix &>/dev/null && [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then
+    echo "Nix が見つかりません。先に以下を実行してください:"
+    echo "  curl -fsSL https://install.determinate.systems/nix | sh -s -- install"
+    exit 1
 fi
+# このシェルに nix の PATH がなければ読み込む
+command -v nix &>/dev/null || . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-# 既存のファイルをバックアップ（シンボリックリンクでない場合）
-backup_if_exists() {
-    local target="$HOME/$1"
-    if [ -e "$target" ] && [ ! -L "$target" ]; then
-        echo "Backing up $target to $target.backup"
-        mv "$target" "$target.backup"
-    fi
-}
-
-echo "Backing up existing files..."
-backup_if_exists ".bashrc"
-backup_if_exists ".bash_profile"
-backup_if_exists ".profile"
-backup_if_exists ".tmux.conf"
-backup_if_exists ".config/git"
-backup_if_exists ".config/starship.toml"
-backup_if_exists ".claude"
-backup_if_exists ".agents"
-backup_if_exists ".gemini"
-
-# 必要なディレクトリを作成
-mkdir -p "$HOME/.config"
-
-# Stow でシンボリックリンク作成
-echo "Stowing dotfiles..."
-cd "$DOTFILES_DIR"
-stow -v bash tmux git starship claude agents gemini
-
-# Codex にも共通指示を届ける（正本は ~/.agents/AGENTS.md）
-echo "Linking codex AGENTS.md..."
-mkdir -p "$HOME/.codex"
-ln -sf "$HOME/.agents/AGENTS.md" "$HOME/.codex/AGENTS.md"
-
-# mise
-echo setup mise
-if ! command -v mise &>/dev/null; then
-    curl https://mise.run | sh
-    eval "$(~/.local/bin/mise activate bash)"
-    mise use --global node
+# ===== 2. home-manager 適用 =====
+# ホスト名等での自動判別はせず、明示指定(デフォルトは OS で出し分け)
+if [ -n "$1" ]; then
+    PROFILE="$1"
+elif [ "$(uname)" = "Darwin" ]; then
+    PROFILE="hiroki-iida@mac"
+elif [ "$(uname -m)" = "aarch64" ]; then
+    PROFILE="hiroki@linux-aarch64"
 else
-    echo "mise already installed, skipping"
-    eval "$(~/.local/bin/mise activate bash)"
+    PROFILE="hiroki@linux"
 fi
+echo "Applying home-manager configuration: ${PROFILE}"
+nix run home-manager -- switch --flake "${DOTFILES_DIR}#${PROFILE}"
 
-# claude
-echo setup claude code
+# ===== 3. AI CLI 群(自己アップデート機構を持つため Nix 管理外) =====
+echo "setup claude code"
 if ! command -v claude &>/dev/null; then
     curl -fsSL https://claude.ai/install.sh | bash
 else
     echo "claude already installed, skipping"
 fi
 
-# codex
-echo setup codex
+echo "setup codex"
 if ! command -v codex &>/dev/null; then
     curl -fsSL https://chatgpt.com/codex/install.sh | sh
 else
     echo "codex already installed, skipping"
 fi
 
-# gemini-cli
-echo setup antigravity cli
+echo "setup antigravity cli"
 if ! command -v agy &>/dev/null; then
-       curl -fsSL https://antigravity.google/cli/install.sh | bash
+    curl -fsSL https://antigravity.google/cli/install.sh | bash
 else
     echo "antigravity already installed, skipping"
-fi
-
-# starship
-echo setup starship
-if ! command -v starship &>/dev/null; then
-    mkdir -p ~/.local/bin
-    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -b ${HOME}/.local/bin -y
-else
-    echo "starship already installed, skipping"
-fi
-
-# fzf
-echo setup fzf
-if [ ! -d ~/.fzf ]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
-else
-    echo "fzf already installed, skipping"
-fi
-
-# zoxide
-echo setup zoxide
-if ! command -v zoxide &>/dev/null; then
-    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-else
-    echo "zoxide already installed, skipping"
-fi
-
-# uv
-echo setup uv
-if ! command -v uv &>/dev/null; then
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-else
-    echo "uv already installed, skipping"
-fi
-
-# kubectl
-# echo setup kubectl
-# if ! command -v kubectl &>/dev/null; then
-#     cd /tmp
-#     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-#     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-#     echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-#     chmod +x kubectl
-#     mv kubectl ~/.local/bin/
-#     cd "$DOTFILES_DIR"
-# else
-#     echo "kubectl already installed, skipping"
-# fi
-
-# git completion
-echo setup git completion
-if [ ! -f ~/.local/git-completion.bash ]; then
-    if [ -f /usr/share/bash-completion/completions/git ]; then
-        cp /usr/share/bash-completion/completions/git ~/.local/git-completion.bash
-        echo "__git_complete g __git_main" >> ~/.local/git-completion.bash
-    fi
-else
-    echo "git completion already installed, skipping"
-fi
-
-# bun
-echo setup bun
-if ! command -v uv &>/dev/null; then
-    curl -fsSL https://bun.sh/install | bash
-else
-    echo "bun already installed, skipping"
 fi
 
 echo "Setup complete!"
