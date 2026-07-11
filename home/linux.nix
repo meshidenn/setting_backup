@@ -26,7 +26,8 @@
       export PATH="''${AQUA_ROOT_DIR:-''${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
 
       # SSH agent (keychain) — 1回パスフレーズを入れたら使い回す
-      if command -v keychain &>/dev/null; then
+      # 鍵がこのマシンに存在するときだけ動かす(ホームサーバー等には鍵がない)
+      if [ -f ~/.ssh/id_ub_ed25519 ] && command -v keychain &>/dev/null; then
           eval "$(keychain --eval --quiet ~/.ssh/id_ub_ed25519)"
       fi
 
