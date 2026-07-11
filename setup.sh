@@ -27,7 +27,8 @@ else
     PROFILE="hiroki@linux"
 fi
 echo "Applying home-manager configuration: ${PROFILE}"
-nix run home-manager -- switch --flake "${DOTFILES_DIR}#${PROFILE}"
+# -b backup: 既存ファイルと衝突したら <name>.backup に退避して続行(新規マシンでの初回適用対策)
+nix run home-manager -- switch --flake "${DOTFILES_DIR}#${PROFILE}" -b backup
 
 # ===== 3. AI CLI 群(自己アップデート機構を持つため Nix 管理外) =====
 echo "setup claude code"
