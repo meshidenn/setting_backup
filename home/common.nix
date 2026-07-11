@@ -57,6 +57,10 @@ in
   # ===== tmux(旧 tmux/ stow パッケージの5行を移植) =====
   programs.tmux = {
     enable = true;
+    # マウスでスクロール(ホイールで copy-mode に入る)・ペイン選択を可能にする
+    mouse = true;
+    # スクロールバック保持行数(デフォルト2000)
+    historyLimit = 50000;
     extraConfig = ''
       set -g prefix C-q
       unbind C-b
