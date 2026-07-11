@@ -22,7 +22,7 @@ if [ -n "$1" ]; then
 elif [ "$(uname)" = "Darwin" ]; then
     PROFILE="hiroki-iida@mac"
 else
-    PROFILE="hiroki-iida@linux"
+    PROFILE="hiroki@linux"
 fi
 echo "Applying home-manager configuration: ${PROFILE}"
 nix run home-manager -- switch --flake "${DOTFILES_DIR}#${PROFILE}"
