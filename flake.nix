@@ -46,11 +46,11 @@
       };
 
       # 会社 Linux 機。uname では個人サーバーと区別できないため
-      # setup.sh の引数で明示指定する: ./setup.sh hiroki@work-linux
-      homeConfigurations."hiroki@work-linux" = mkHome {
+      # setup.sh の引数で明示指定する: ./setup.sh hiroki-iida@work-linux
+      homeConfigurations."hiroki-iida@work-linux" = mkHome {
         system = "x86_64-linux";
-        username = "hiroki";
-        homeDirectory = "/home/hiroki";
+        username = "hiroki-iida";
+        homeDirectory = "/home/hiroki-iida";
         modules = [
           ./home/common.nix
           ./home/linux.nix
